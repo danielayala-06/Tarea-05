@@ -6,8 +6,9 @@
     <title>Graficos</title>
      <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 </head>
-<body>
+<body style="background-color: #f1f1f1;">
     <div class="container my-1 py-2 ">
         <h1 class="fw-ligth">Graficos</h1>
     </div>
@@ -17,7 +18,7 @@
             <h2 class="fw-ligth">Grafico 1</h2>
         </div>
 
-        <div class="container border bg-ligther d-flex p-4">
+        <div class="container border bg-ligther d-flex p-4 shadow">
             <div class="container w-25">
                 <form id="form-1">
                     <div class="my-1">
@@ -41,7 +42,7 @@
                         <input type="number" class="form-control" name="valor5" id="valor5" min="0" required>
                     </div>
                     <div class="form-group text-end my-3">
-                        <input type="reset" value="Cancelar" class="btn btn-outline-secondary">
+                        <input type="reset" value="Reset" class="btn btn-outline-secondary">
                         <input type="submit" value="Enviar"  class="btn btn-outline-primary">
                     </div>
                 </form>
@@ -55,13 +56,87 @@
             <h2 class="fw-ligth">Grafico 2</h2>
         </div>
 
-        <div class="container border bg-ligther">
+        <div class="container border bg-ligther shadow">
             <div id="char-container" class="container">
                 <canvas id="grafico-2"></canvas>
             </div>
         </div>
             
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            // Referencia al grafico 1
+            const chart1 = document.getElementById('grafico-1')
+            let grafico
+
+
+            // Referencia al formulario
+            const form = document.getElementById('form-1')
+            
+            // Evento submit del formulario
+            form.addEventListener("submit", function(e){
+                e.preventDefault();// Detenemos el envio del formulario
+
+                const data = obtenerDataForm() // Obtenemos los datos del formulario
+                crearGrafico1(data, grafico) // Creamos el grafico 1 con los datos obten
+            })
+
+            /**
+             * recibe un array de datos y crea el grafico 1
+             * @param {Array} data - Array de datos para el grafico
+             */
+            function crearGrafico1(data, grafico){
+                grafico = new Chart(chart1, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Python', 'PHP', 'Javascript', 'Java', 'Rust'],
+                        datasets: [{
+                            label: 'Cantidad de usuarios',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(240, 112, 21, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                })
+                grafico.update()
+            }
+
+            /**
+             * Obtiene los datos del formulario y los retorna en un array
+             * @returns {Array} - Array de datos del formulario
+             */
+            function obtenerDataForm(){
+                let valor1 = document.getElementById('valor1').value
+                let valor2 = document.getElementById('valor2').value
+                let valor3 = document.getElementById('valor3').value
+                let valor4 = document.getElementById('valor4').value
+                let valor5 = document.getElementById('valor5').value
+
+                return [valor1, valor2, valor3, valor4, valor5]
+            }
+        });
+
+    </script>
 </body>
 </html>

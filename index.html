@@ -69,39 +69,48 @@
         document.addEventListener("DOMContentLoaded", function(){
             // Referencia al grafico 1
             const chart1 = document.getElementById('grafico-1')
+            let grafico1 = null; // Variable para almacenar la instancia del gráfico 1
 
             // Referencia al formulario
             const form = document.getElementById('form-1')
             
-            const data = obtenerDataForm() // Obtenemos los datos del formulario
-            crearGrafico(data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
+            let data = obtenerDataForm() // Obtenemos los datos del formulario
+            crearGrafico(grafico1,data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
                 e.preventDefault();// Detenemos el envio del formulario
 
-                const data = obtenerDataForm() // Obtenemos los datos del formulario
-                actualizarGrafico1(data) // Actualizamos el grafico 1 con los nuevos datos
+                data = obtenerDataForm() // Obtenemos los datos del formulario
+
+                actualizarGrafico1(grafico1, data) // Actualizamos el grafico 1 con los nuevos datos
 
             })
 
-            function actualizarGrafico1(data){
+            /**
+             * Actualiza el grafico 1
+             * @param {Array<number>} data - Array de conteo de datos para el eje "Y"
+            */
+            function actualizarGrafico1(grafico1, data_json){
+                console.log('Actualizando grafico 1 con los datos: ', data_json)
                 
                 // Recorremos el array de datos y actualizamos el grafico
-                grafico.data.datasets[0].data = data.map(fila=> fila.cont_usuarios)
+                grafico1.data.datasets[0].data = data_json.map(fila=> fila.cont_usuarios)
+                //console.log('Datos enviados',data_json.map(fila=> fila.cont_usuarios))
 
-                grafico.update()
+                // Actualizamos el grafico para mostrar los datos nuevos :D
+                grafico1.update()
             }
 
             /**
-             * Crea un grafico de barras con los datos proporcionados
-             * @param {data} - Array de datos para el grafico
-             * @param {canva} - objeto canvas que servira para mostrar el grafico
-             * @param {labels} - Array de labels que iran en el grafico
-             * @param {type} - Tipo de grafico: bar, line, pie, etc.
+             * Crea un gráfico de barras con los datos proporcionados
+             * @param {Array<number>} data - Array de datos para el gráfico
+             * @param {HTMLCanvasElement} canvas - Objeto canvas donde se dibuja el gráfico
+             * @param {Array<string>} labels - Labels del gráfico
+             * @param {string} type - Tipo de gráfico: bar, line, pie, etc.
              */
-            function crearGrafico(data, canva, labels, type){
-                grafico = new Chart(chart1, {
+            function crearGrafico(grafico1, data, canva, labels, type){
+                grafico1 = new Chart(chart1, {
                     type: type,
                     data: {
                         labels: labels,
@@ -132,7 +141,7 @@
                         }
                     }
                 })
-                grafico.update()
+                grafico1.update()
             }
 
             /**
@@ -153,12 +162,13 @@
                     {lenguaje: 'Java', cont_usuarios: valor4},
                     {lenguaje: 'Rust', cont_usuarios: valor5}
                 ]
+                console.log('Datos del formulario: ', $data_json)
                 
                 return $data_json;
             }
             
             /* 
-                GRAFICO 2 (Cargamos desde un )
+                GRAFICO 2 (Cargamos desde un JSON)
             */
             
         });

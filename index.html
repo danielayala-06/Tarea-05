@@ -74,7 +74,7 @@
             const form = document.getElementById('form-1')
             
             const data = obtenerDataForm() // Obtenemos los datos del formulario
-            crearGrafico1(data) // Creamos el grafico 1 con los datos obten
+            crearGrafico(data, chart1) // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
@@ -97,7 +97,7 @@
              * recibe un array de datos y crea el grafico 1
              * @param {Array} data - Array de datos para el grafico
              */
-            function crearGrafico1(data){
+            function crearGrafico(data, canva){
                 grafico = new Chart(chart1, {
                     type: 'bar',
                     data: {
@@ -153,6 +153,8 @@
                 
                 return $data_json;
             }
+
+            
         });
         
     </script>

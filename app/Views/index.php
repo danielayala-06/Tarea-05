@@ -69,25 +69,35 @@
         document.addEventListener("DOMContentLoaded", function(){
             // Referencia al grafico 1
             const chart1 = document.getElementById('grafico-1')
-            let grafico
-
 
             // Referencia al formulario
             const form = document.getElementById('form-1')
+            
+            const data = obtenerDataForm() // Obtenemos los datos del formulario
+            crearGrafico1(data) // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
                 e.preventDefault();// Detenemos el envio del formulario
 
                 const data = obtenerDataForm() // Obtenemos los datos del formulario
-                crearGrafico1(data, grafico) // Creamos el grafico 1 con los datos obten
+                actualizarGrafico1(data) // Actualizamos el grafico 1 con los nuevos datos
+
             })
+
+            function actualizarGrafico1(data){
+                
+                // Recorremos el array de datos y actualizamos el grafico
+                grafico.data.datasets[0].data = data.map(fila=> fila.cont_usuarios)
+
+                grafico.update()
+            }
 
             /**
              * recibe un array de datos y crea el grafico 1
              * @param {Array} data - Array de datos para el grafico
              */
-            function crearGrafico1(data, grafico){
+            function crearGrafico1(data){
                 grafico = new Chart(chart1, {
                     type: 'bar',
                     data: {
@@ -123,8 +133,8 @@
             }
 
             /**
-             * Obtiene los datos del formulario y los retorna en un array
-             * @returns {Array} - Array de datos del formulario
+             * Obtiene los datos del formulario y los retorna en un objeto
+             * @returns {Object} - Objeto con los datos del formulario
              */
             function obtenerDataForm(){
                 let valor1 = document.getElementById('valor1').value
@@ -133,10 +143,18 @@
                 let valor4 = document.getElementById('valor4').value
                 let valor5 = document.getElementById('valor5').value
 
-                return [valor1, valor2, valor3, valor4, valor5]
+                $data_json = [
+                    {lenguaje: 'Python', cont_usuarios: valor1},
+                    {lenguaje: 'PHP', cont_usuarios: valor2},
+                    {lenguaje: 'Javascript', cont_usuarios: valor3},
+                    {lenguaje: 'Java', cont_usuarios: valor4},
+                    {lenguaje: 'Rust', cont_usuarios: valor5}
+                ]
+                
+                return $data_json;
             }
         });
-
+        
     </script>
 </body>
 </html>

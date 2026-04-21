@@ -74,7 +74,7 @@
             const form = document.getElementById('form-1')
             
             const data = obtenerDataForm() // Obtenemos los datos del formulario
-            crearGrafico(data, chart1) // Creamos el grafico 1 con los datos obten
+            crearGrafico(data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
@@ -94,14 +94,17 @@
             }
 
             /**
-             * recibe un array de datos y crea el grafico 1
-             * @param {Array} data - Array de datos para el grafico
+             * Crea un grafico de barras con los datos proporcionados
+             * @param {data} - Array de datos para el grafico
+             * @param {canva} - objeto canvas que servira para mostrar el grafico
+             * @param {labels} - Array de labels que iran en el grafico
+             * @param {type} - Tipo de grafico: bar, line, pie, etc.
              */
-            function crearGrafico(data, canva){
+            function crearGrafico(data, canva, labels, type){
                 grafico = new Chart(chart1, {
-                    type: 'bar',
+                    type: type,
                     data: {
-                        labels: ['Python', 'PHP', 'Javascript', 'Java', 'Rust'],
+                        labels: labels,
                         datasets: [{
                             label: 'Cantidad de usuarios',
                             data: data,
@@ -153,7 +156,10 @@
                 
                 return $data_json;
             }
-
+            
+            /* 
+                GRAFICO 2 (Cargamos desde un )
+            */
             
         });
         

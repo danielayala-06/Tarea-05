@@ -9,8 +9,11 @@
 
 </head>
 <body style="background-color: #f1f1f1;">
-    <div class="container my-1 py-2 ">
-        <h1 class="fw-ligth">Graficos</h1>
+    <div class="container my-1 py-2 d-flex justify-content-between align-items-center">
+        <h1 class="fw-ligth col-6">
+            Graficos
+        </h1>
+        <a href="/api.html" class= "btn btn-outline-primary">Ir a API -></a>
     </div>
     <main>
         
@@ -69,13 +72,17 @@
         document.addEventListener("DOMContentLoaded", function(){
             // Referencia al grafico 1
             const chart1 = document.getElementById('grafico-1')
-            let grafico1 = null; // Variable para almacenar la instancia del gráfico 1
-
+            // Referencia al grafico 2
+            const chart2 = document.getElementById('grafico-2')
             // Referencia al formulario
             const form = document.getElementById('form-1')
             
+            
+            let grafico1 = null; // Variable para almacenar la instancia del gráfico 1
+            let grafico2 = null; // Variable para almacenar la instancia del gráfico 2
+
             let data = obtenerDataForm() // Obtenemos los datos del formulario
-            crearGrafico(grafico1,data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
+            grafico1 = crearGrafico(grafico1,data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
@@ -92,6 +99,7 @@
              * @param {Array<number>} data - Array de conteo de datos para el eje "Y"
             */
             function actualizarGrafico1(grafico1, data_json){
+                
                 console.log('Actualizando grafico 1 con los datos: ', data_json)
                 
                 // Recorremos el array de datos y actualizamos el grafico
@@ -110,7 +118,7 @@
              * @param {string} type - Tipo de gráfico: bar, line, pie, etc.
              */
             function crearGrafico(grafico1, data, canva, labels, type){
-                grafico1 = new Chart(chart1, {
+                grafico1 = new Chart(canva, {
                     type: type,
                     data: {
                         labels: labels,
@@ -142,12 +150,9 @@
                     }
                 })
                 grafico1.update()
+                return grafico1;
             }
 
-            /**
-             * Obtiene los datos del formulario y los retorna en un objeto
-             * @returns {Object} - Objeto con los datos del formulario
-             */
             function obtenerDataForm(){
                 let valor1 = document.getElementById('valor1').value
                 let valor2 = document.getElementById('valor2').value
@@ -170,6 +175,46 @@
             /* 
                 GRAFICO 2 (Cargamos desde un JSON)
             */
+            data_grafico_2 = [
+                {
+                    dia: 'Lunes',
+                    grados: 18,
+                },
+                {
+                    dia: 'Martes',
+                    grados: 20,
+                },
+                {
+                    dia: 'Miercoles',
+                    grados: 27,
+                },
+                {
+                    dia: 'Jueves',
+                    grados: 24,
+                },
+                {
+                    dia: 'Viernes',
+                    grados: 21,
+                },
+                {
+                    dia: 'Sábado',
+                    grados: 22,
+                },
+                {
+                    dia: 'Domingo',
+                    grados: 29,
+                },
+            ];
+            
+            function crearGrafico2(json_data){
+                grafico2 = crearGrafico(
+                    grafico2, 
+                    json_data.map(fila=> fila.grados), 
+                    chart2, 
+                    json_data.map(fila=> fila.dia), 
+                    'line')
+            }
+            crearGrafico2(data_grafico_2)
             
         });
         

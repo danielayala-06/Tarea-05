@@ -9,8 +9,11 @@
 
 </head>
 <body style="background-color: #f1f1f1;">
-    <div class="container my-1 py-2 ">
-        <h1 class="fw-ligth">Graficos</h1>
+    <div class="container my-1 py-2 d-flex justify-content-between align-items-center">
+        <h1 class="fw-ligth col-6">
+            Graficos
+        </h1>
+        <a href="/api.html" class= "btn btn-outline-primary">Ir a API -></a>
     </div>
     <main>
         
@@ -69,29 +72,56 @@
         document.addEventListener("DOMContentLoaded", function(){
             // Referencia al grafico 1
             const chart1 = document.getElementById('grafico-1')
-            let grafico
-
-
+            // Referencia al grafico 2
+            const chart2 = document.getElementById('grafico-2')
             // Referencia al formulario
             const form = document.getElementById('form-1')
+            
+            
+            let grafico1 = null; // Variable para almacenar la instancia del gráfico 1
+            let grafico2 = null; // Variable para almacenar la instancia del gráfico 2
+
+            let data = obtenerDataForm() // Obtenemos los datos del formulario
+            grafico1 = crearGrafico(grafico1,data, chart1, ["Python", "PHP", "Javascript", "Java", "Rust"], "bar") // Creamos el grafico 1 con los datos obten
             
             // Evento submit del formulario
             form.addEventListener("submit", function(e){
                 e.preventDefault();// Detenemos el envio del formulario
 
-                const data = obtenerDataForm() // Obtenemos los datos del formulario
-                crearGrafico1(data, grafico) // Creamos el grafico 1 con los datos obten
+                data = obtenerDataForm() // Obtenemos los datos del formulario
+
+                actualizarGrafico1(grafico1, data) // Actualizamos el grafico 1 con los nuevos datos
+
             })
 
             /**
-             * recibe un array de datos y crea el grafico 1
-             * @param {Array} data - Array de datos para el grafico
+             * Actualiza el grafico 1
+             * @param {Array<number>} data - Array de conteo de datos para el eje "Y"
+            */
+            function actualizarGrafico1(grafico1, data_json){
+                
+                console.log('Actualizando grafico 1 con los datos: ', data_json)
+                
+                // Recorremos el array de datos y actualizamos el grafico
+                grafico1.data.datasets[0].data = data_json.map(fila=> fila.cont_usuarios)
+                //console.log('Datos enviados',data_json.map(fila=> fila.cont_usuarios))
+
+                // Actualizamos el grafico para mostrar los datos nuevos :D
+                grafico1.update()
+            }
+
+            /**
+             * Crea un gráfico de barras con los datos proporcionados
+             * @param {Array<number>} data - Array de datos para el gráfico
+             * @param {HTMLCanvasElement} canvas - Objeto canvas donde se dibuja el gráfico
+             * @param {Array<string>} labels - Labels del gráfico
+             * @param {string} type - Tipo de gráfico: bar, line, pie, etc.
              */
-            function crearGrafico1(data, grafico){
-                grafico = new Chart(chart1, {
-                    type: 'bar',
+            function crearGrafico(grafico1, data, canva, labels, type){
+                grafico1 = new Chart(canva, {
+                    type: type,
                     data: {
-                        labels: ['Python', 'PHP', 'Javascript', 'Java', 'Rust'],
+                        labels: labels,
                         datasets: [{
                             label: 'Cantidad de usuarios',
                             data: data,
@@ -119,13 +149,10 @@
                         }
                     }
                 })
-                grafico.update()
+                grafico1.update()
+                return grafico1;
             }
 
-            /**
-             * Obtiene los datos del formulario y los retorna en un array
-             * @returns {Array} - Array de datos del formulario
-             */
             function obtenerDataForm(){
                 let valor1 = document.getElementById('valor1').value
                 let valor2 = document.getElementById('valor2').value
@@ -133,10 +160,64 @@
                 let valor4 = document.getElementById('valor4').value
                 let valor5 = document.getElementById('valor5').value
 
-                return [valor1, valor2, valor3, valor4, valor5]
+                $data_json = [
+                    {lenguaje: 'Python', cont_usuarios: valor1},
+                    {lenguaje: 'PHP', cont_usuarios: valor2},
+                    {lenguaje: 'Javascript', cont_usuarios: valor3},
+                    {lenguaje: 'Java', cont_usuarios: valor4},
+                    {lenguaje: 'Rust', cont_usuarios: valor5}
+                ]
+                console.log('Datos del formulario: ', $data_json)
+                
+                return $data_json;
             }
+            
+            /* 
+                GRAFICO 2 (Cargamos desde un JSON)
+            */
+            data_grafico_2 = [
+                {
+                    dia: 'Lunes',
+                    grados: 18,
+                },
+                {
+                    dia: 'Martes',
+                    grados: 20,
+                },
+                {
+                    dia: 'Miercoles',
+                    grados: 27,
+                },
+                {
+                    dia: 'Jueves',
+                    grados: 24,
+                },
+                {
+                    dia: 'Viernes',
+                    grados: 21,
+                },
+                {
+                    dia: 'Sábado',
+                    grados: 22,
+                },
+                {
+                    dia: 'Domingo',
+                    grados: 29,
+                },
+            ];
+            
+            function crearGrafico2(json_data){
+                grafico2 = crearGrafico(
+                    grafico2, 
+                    json_data.map(fila=> fila.grados), 
+                    chart2, 
+                    json_data.map(fila=> fila.dia), 
+                    'line')
+            }
+            crearGrafico2(data_grafico_2)
+            
         });
-
+        
     </script>
 </body>
 </html>
